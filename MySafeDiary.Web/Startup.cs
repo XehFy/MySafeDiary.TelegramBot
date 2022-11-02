@@ -10,6 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySafeDiary.Domain.Abstractions;
+using MySafeDiary.Domain.Services;
+using MySafeDiary.Data;
+using MySafeDiary.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace MySafeDiary.Web
 {
@@ -25,7 +30,14 @@ namespace MySafeDiary.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ICommandService, CommandService>();
+            //services.AddDbContext<BotContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            //.AddEntityFrameworkNpgsql()
+            services.AddDbContext<BotContext>(opt =>
+        opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTelegramBotClient(Configuration);
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +48,7 @@ namespace MySafeDiary.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

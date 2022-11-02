@@ -5,6 +5,10 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySafeDiary.Web", "MySafeDiary.Web\MySafeDiary.Web.csproj", "{66203E8C-D48E-4149-8E7A-6DA372A645F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySafeDiary.Domain", "MySafeDiary.Domain\MySafeDiary.Domain.csproj", "{7049B015-002D-4050-A33A-B8C62ED2B215}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySafeDiary.Data", "MySafeDiary.Data\MySafeDiary.Data.csproj", "{A04F440A-8193-4E7A-A9AC-D30EF80628E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{66203E8C-D48E-4149-8E7A-6DA372A645F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66203E8C-D48E-4149-8E7A-6DA372A645F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66203E8C-D48E-4149-8E7A-6DA372A645F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7049B015-002D-4050-A33A-B8C62ED2B215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7049B015-002D-4050-A33A-B8C62ED2B215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7049B015-002D-4050-A33A-B8C62ED2B215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7049B015-002D-4050-A33A-B8C62ED2B215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A04F440A-8193-4E7A-A9AC-D30EF80628E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A04F440A-8193-4E7A-A9AC-D30EF80628E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A04F440A-8193-4E7A-A9AC-D30EF80628E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04F440A-8193-4E7A-A9AC-D30EF80628E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
