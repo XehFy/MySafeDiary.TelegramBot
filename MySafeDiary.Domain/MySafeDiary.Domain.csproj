@@ -19,4 +19,9 @@
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\MySafeDiary.Infrastructure.csproj" />
+    <ProjectReference Include="..\MySafeDiary.Data\MySafeDiary.Data.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using MySafeDiary.Data;
+using MySafeDiary.Data.Repositories;
 using System.Linq;
 
 namespace MySafeDiary.Web.Controllers
@@ -21,6 +22,9 @@ namespace MySafeDiary.Web.Controllers
             _commandService = commandService;
             _telegramBotClient = telegramBotClient;
             _botContext = context;
+            ContextInitialisator.initContext(context);
+            TelegramCommand.initUserRepository(new UserRepository());
+            //TelegramCommand.initContext(_botContext);
         }
 
         [HttpGet]
@@ -42,7 +46,7 @@ namespace MySafeDiary.Web.Controllers
             {
                 if (command.Contains(message))
                 {
-                    await command.Execute(message, _telegramBotClient);
+                    await command.Execute(message, _telegramBotClient/*, _botContext*/);
                     break;
                 }
             }

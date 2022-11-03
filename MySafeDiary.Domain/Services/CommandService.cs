@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySafeDiary.Domain.Abstractions;
 using MySafeDiary.Domain.Commands;
+using MySafeDiary.Data;
 
 namespace MySafeDiary.Domain.Services
 {
@@ -14,7 +15,9 @@ namespace MySafeDiary.Domain.Services
         {
             _commands = new List<TelegramCommand>
             {
-                new StartCommand()
+                new StartCommand(),
+                new RegisterCommand(),
+                new NewUserCommand()
             };
         }
 
