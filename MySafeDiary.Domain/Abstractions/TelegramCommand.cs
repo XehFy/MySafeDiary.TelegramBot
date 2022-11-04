@@ -12,7 +12,8 @@ namespace MySafeDiary.Domain.Abstractions
     public abstract class TelegramCommand
     {
         //protected static BotContext botContext;
-        protected static UserRepository _userRepository;
+        protected static UserRepository userRepository;
+        public static DiaryRepository diaryRepository;
 
         public abstract string Name { get; }
 
@@ -20,9 +21,13 @@ namespace MySafeDiary.Domain.Abstractions
 
         public abstract bool Contains(Message message);
 
-        public static void initUserRepository(UserRepository userRepository)
+        public static void initUserRepository(UserRepository _userRepository)
         {
-            _userRepository = userRepository;
+            userRepository = _userRepository;
+        }
+        public static void initDiaryRepository(DiaryRepository _diaryRepository)
+        {
+            diaryRepository = _diaryRepository;
         }
     }
 }

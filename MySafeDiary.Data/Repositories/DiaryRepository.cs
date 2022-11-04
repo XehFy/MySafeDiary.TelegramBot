@@ -6,33 +6,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace MySafeDiary.Data.Repositories
 {
-    public class UserRepository : RepositoryBase<User>
+    public class DiaryRepository : RepositoryBase<Diary>
     {
-        public void CreateUser(User user)
+        public void CreateDiary(Diary diary)
         {
-            Create(user);
+            Create(diary);
         }
-        public void UpdateUser(User user)
+        public void UpdateDiary(Diary diary)
         {
-            Update(user);
+            Update(diary);
         }
-        public void DeleteUser(User user)
+        public void DeleteDiary(Diary diary)
         {
-            Delete(user);
+            Delete(diary);
         }
-
         public void AddDiary(Diary diary, User user)
         {
             var userTo = BotContext.Users
                 .Include(u => u.Diaries).First(u => u.Id == user.Id);
             userTo.Diaries.Add(diary);
-        }
-
-        public async Task<User> GetUserByIdAsync(long userId)
-        {
-            return await FindByCondition(user => user.Id.Equals(userId)).FirstOrDefaultAsync();
         }
     }
 }

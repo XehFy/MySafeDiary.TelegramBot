@@ -30,7 +30,7 @@ namespace MySafeDiary.Domain.Commands
         public override async Task Execute(Message message, ITelegramBotClient botClient/*, BotContext botContext*/)
         {
             var chatId = message.Chat.Id;
-            var u = await _userRepository.GetUserByIdAsync(chatId);
+            var u = await userRepository.GetUserByIdAsync(chatId);
             if (u != null)
             {
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Вы уже зарегистрированы " + u.Email, replyMarkup: Keyboard.Menu);

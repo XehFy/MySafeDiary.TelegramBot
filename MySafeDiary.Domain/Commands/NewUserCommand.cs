@@ -26,7 +26,7 @@ namespace MySafeDiary.Domain.Commands
         public override async Task Execute(Message message, ITelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-            var user = await _userRepository.GetUserByIdAsync(chatId);
+            var user = await userRepository.GetUserByIdAsync(chatId);
             if (user != null)
             {
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Вы уже зарегистрированы " + user.Email);
@@ -42,8 +42,14 @@ namespace MySafeDiary.Domain.Commands
                     Password = password,
                     Email = email
                 };
-                _userRepository.CreateUser(user);
-                await _userRepository.SaveAsync();
+                var diary = new Data.Entities.Diary { Name = "Мой дневник" };
+                userRepository.CreateUser(user);
+                userRepository.SaveAsync();
+                //await userRepository.SaveAsync();
+                diaryRepository.AddDiary(diary, user);
+                //diaryRepository.AddDiary(diary, user);
+                //await diaryRepository.SaveAsync();
+                await userRepository.SaveAsync();
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Вы зарегистрированы успешно!", replyMarkup: Keyboard.Menu);
             }
         }

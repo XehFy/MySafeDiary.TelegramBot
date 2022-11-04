@@ -24,6 +24,7 @@ namespace MySafeDiary.Web.Controllers
             _botContext = context;
             ContextInitialisator.initContext(context);
             TelegramCommand.initUserRepository(new UserRepository());
+            TelegramCommand.initDiaryRepository(new DiaryRepository());
             //TelegramCommand.initContext(_botContext);
         }
 
