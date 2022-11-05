@@ -15,7 +15,7 @@ namespace MySafeDiary.Domain.Commands
     {
         public override string Name => "Зарегистрироваться";
 
-        public override bool Contains(Message message)
+        public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)
         {
             if (message.Type != MessageType.Text)
                 return false;
@@ -27,14 +27,22 @@ namespace MySafeDiary.Domain.Commands
         {
             var chatId = message.Chat.Id;
             var u = await userRepository.GetUserByIdAsync(chatId);
-            if (u != null)
+            if (u.Email != null)
             {
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Вы уже зарегистрированы " + u.Email, replyMarkup: Keyboard.Menu);
             }
             else
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Введите свой Email для связи и пин-код для доступа к записям в дневнике\nИспользуйте шаблон:");
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Регистрация\nexample@email.com\npassw0rd");
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Введите свой Email для связи в случае утраты пароля");
+                u = new Data.Entities.User
+                {
+                    Id = chatId,
+                    IsEmailing = true
+                };
+                userRepository.Update(u);
+                await userRepository.SaveAsync();
+                //await botClient.SendTextMessageAsync(message.Chat.Id, "Введите свой Email для связи и пин-код для доступа к записям в дневнике\nИспользуйте шаблон:");
+                //await botClient.SendTextMessageAsync(message.Chat.Id, "Регистрация\nexample@email.com\npassw0rd");
             }
         }
     }

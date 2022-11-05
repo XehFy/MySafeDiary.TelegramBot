@@ -15,7 +15,7 @@ namespace MySafeDiary.Domain.Commands
     {
         public override string Name => "Регистрация";
 
-        public override bool Contains(Message message)
+        public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)
         {
             if (message.Type != MessageType.Text)
                 return false;

@@ -6,6 +6,8 @@ using Telegram.Bot.Types;
 using MySafeDiary.Data;
 using MySafeDiary.Data.Repositories;
 using System.Linq;
+using System.Collections.Generic;
+using MySafeDiary.Domain.Services;
 
 namespace MySafeDiary.Web.Controllers
 {
@@ -15,41 +17,65 @@ namespace MySafeDiary.Web.Controllers
     {
         private readonly ITelegramBotClient _telegramBotClient;
         private readonly ICommandService _commandService;
-        BotContext _botContext;
+        private readonly ICommandService _noCommandService;
 
-        public BotController(ICommandService commandService, ITelegramBotClient telegramBotClient, BotContext context)
+        //BotContext _botContext;
+
+        public BotController(IEnumerable<ICommandService> commandServices, ITelegramBotClient telegramBotClient, BotContext context)
         {
-            _commandService = commandService;
+            _commandService = commandServices.First(o => o.GetType() == typeof(CommandService));
+            _noCommandService = commandServices.First(o => o.GetType() == typeof(NoCommandService));
             _telegramBotClient = telegramBotClient;
-            _botContext = context;
+            //_botContext = context;
             ContextInitialisator.initContext(context);
-            TelegramCommand.initUserRepository(new UserRepository());
-            TelegramCommand.initDiaryRepository(new DiaryRepository());
+            RepositoryInitializator.initUserRepository(new UserRepository());
+            RepositoryInitializator.initDiaryRepository(new DiaryRepository());
+            //TelegramCommand.initUserRepository(new UserRepository());
+            //TelegramCommand.initDiaryRepository(new DiaryRepository());
             //TelegramCommand.initContext(_botContext);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            string s = "";
-            _botContext.Users.ToList().ForEach(p => s += p.Email + " " + p.Password + "\n");
-            return Ok(s);
+            return Ok("Bot started");
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Update update)
         {
+            CommandService commandService = (CommandService)_commandService;
+            NoCommandService noCommandService = (NoCommandService)_noCommandService;
             if (update == null) return Ok();
 
             var message = update.Message;
 
-            foreach (var command in _commandService.Get())
+            bool IsCommand = false;
+            if (message == null)
             {
-                if (command.Contains(message))
+                return Ok();
+            }
+            foreach (TelegramCommand command in commandService.Get())
+            {
+                if (command.IsExecutionNeeded(message, _telegramBotClient))
                 {
-                    await command.Execute(message, _telegramBotClient/*, _botContext*/);
+                    IsCommand = true;
+                    await command.Execute(message, _telegramBotClient);
                     break;
                 }
+            }
+            if (!IsCommand)
+            {
+                foreach (INorTelegramCommand command in noCommandService.Get())
+                {
+                    if (command.IsExecutionNeeded(message, _telegramBotClient))
+                    {
+                        IsCommand = true;
+                        await command.Execute(message, _telegramBotClient);
+                        break;
+                    }
+                }
+                //await _telegramBotClient.SendTextMessageAsync(message.Chat.Id, message.Text);
             }
             return Ok();
         }

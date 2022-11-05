@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\MySafeDiary.Infrastructure.csproj" />
     <ProjectReference Include="..\MySafeDiary.Data\MySafeDiary.Data.csproj" />
+    <ProjectReference Include="..\MySafeDiary.Infrastructure\MySafeDiary.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

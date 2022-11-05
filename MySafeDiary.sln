@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySafeDiary.Domain", "MySaf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySafeDiary.Data", "MySafeDiary.Data\MySafeDiary.Data.csproj", "{A04F440A-8193-4E7A-A9AC-D30EF80628E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySafeDiary.Infrastructure", "Infrastructure\MySafeDiary.Infrastructure.csproj", "{D56481D9-428F-49B7-B53B-D536FE258A5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySafeDiary.Infrastructure", "MySafeDiary.Infrastructure\MySafeDiary.Infrastructure.csproj", "{D56481D9-428F-49B7-B53B-D536FE258A5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

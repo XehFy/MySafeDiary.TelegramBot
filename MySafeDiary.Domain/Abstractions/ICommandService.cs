@@ -6,6 +6,6 @@ namespace MySafeDiary.Domain.Abstractions
 {
     public interface ICommandService
     {
-        List<TelegramCommand> Get();
+        List<INorTelegramCommand> Get();
     }
 }

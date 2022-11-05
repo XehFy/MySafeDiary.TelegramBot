@@ -9,19 +9,20 @@ namespace MySafeDiary.Domain.Services
 {
     public class CommandService : ICommandService
     {
-        private readonly List<TelegramCommand> _commands;
+        private readonly List<INorTelegramCommand> _commands;
 
         public CommandService()
         {
-            _commands = new List<TelegramCommand>
+            _commands = new List<INorTelegramCommand>
             {
+                //new NullCatcher(),
                 new StartCommand(),
                 new RegisterCommand(),
                 new NewUserCommand()
             };
         }
 
-        public List<TelegramCommand> Get() => _commands;
+        public List<INorTelegramCommand> Get() => _commands;
 
     }
 }

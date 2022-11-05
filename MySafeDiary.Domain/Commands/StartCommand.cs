@@ -19,11 +19,14 @@ namespace MySafeDiary.Domain.Commands
 
         public override string Name => @"/start";
 
-        public override bool Contains(Message message)
+        public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)
         {
-            if (message.Type != MessageType.Text)
-                return false;
-
+            try
+            {
+                if (message.Type != MessageType.Text)
+                    return false;
+            }
+            catch { };
             return message.Text.Contains(Name);
         }
 
@@ -42,6 +45,12 @@ namespace MySafeDiary.Domain.Commands
                     new KeyboardButton[] {"Зарегистрироваться"}
                 })
                 { ResizeKeyboard = true };*/
+                u = new Data.Entities.User
+                {
+                    Id = chatId
+                };
+                userRepository.CreateUser(u);
+                await userRepository.SaveAsync();
                 var mes = await botClient.SendTextMessageAsync(message.Chat.Id, "Здесь будет указана вся инфа и инструкции по боту", replyMarkup: Keyboard.Registration);
             }
             
