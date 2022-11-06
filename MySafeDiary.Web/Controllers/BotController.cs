@@ -30,6 +30,7 @@ namespace MySafeDiary.Web.Controllers
             ContextInitialisator.initContext(context);
             RepositoryInitializator.initUserRepository(new UserRepository());
             RepositoryInitializator.initDiaryRepository(new DiaryRepository());
+            RepositoryInitializator.initNoteRepository(new NoteRepository());
             //TelegramCommand.initUserRepository(new UserRepository());
             //TelegramCommand.initDiaryRepository(new DiaryRepository());
             //TelegramCommand.initContext(_botContext);

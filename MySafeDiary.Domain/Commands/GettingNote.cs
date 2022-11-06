@@ -8,14 +8,40 @@ using Telegram.Bot.Types;
 using MySafeDiary.Data.Entities;
 using System.Linq;
 using Telegram.Bot.Types.Enums;
+using MySafeDiary.Infrastructure.Keyboards;
 
 namespace MySafeDiary.Domain.Commands
 {
     public class GettingNote : NoTelegramCommand
     {
-        public override Task Execute(Message message, ITelegramBotClient client)
+        public override async Task Execute(Message message, ITelegramBotClient client)
         {
-            throw new NotImplementedException();
+            var user = await userRepository.GetUserByIdAsync(message.Chat.Id);
+            string note = message.Text;
+            Data.Entities.User userDTO = new Data.Entities.User()
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Password = user.Password,
+                IsEmailing = user.IsEmailing,
+                IsNoteing = false,
+                IsPasswording = user.IsPasswording
+            };
+            userRepository.Update(userDTO);
+            await userRepository.SaveAsync();
+            var diaries = diaryRepository.FindAll();
+            //var diary = await diaryRepository.GetDiaryByUserIdAsync(user.Id);
+            //var did = diaries.First(d => d.UserId == user.Id).Id;
+            Data.Entities.Note noteData = new Data.Entities.Note()
+            {
+                CreatedDate = DateTime.Now,
+                DiaryId = diaries.First(d => d.UserId == user.Id).Id,
+                Text = note,
+                Name = ""
+            };
+            noteRepository.AddNote(noteData, user);
+            await noteRepository.SaveAsync();
+            await client.SendTextMessageAsync(message.Chat.Id, "Запись успешно добавлена!", replyMarkup: Keyboard.Menu);
         }
 
         public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)

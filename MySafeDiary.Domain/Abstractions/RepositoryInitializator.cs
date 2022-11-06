@@ -9,7 +9,7 @@ namespace MySafeDiary.Domain.Abstractions
     {
         protected static UserRepository userRepository;
         public static DiaryRepository diaryRepository;
-
+        public static NoteRepository noteRepository;
 
         public static void initUserRepository(UserRepository _userRepository)
         {
@@ -18,6 +18,10 @@ namespace MySafeDiary.Domain.Abstractions
         public static void initDiaryRepository(DiaryRepository _diaryRepository)
         {
             diaryRepository = _diaryRepository;
+        }
+        public static void initNoteRepository(NoteRepository _noteRepository)
+        {
+            noteRepository = _noteRepository;
         }
     }
 }

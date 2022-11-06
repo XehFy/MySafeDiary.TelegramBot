@@ -29,5 +29,10 @@ namespace MySafeDiary.Data.Repositories
                 .Include(u => u.Diaries).First(u => u.Id == user.Id);
             userTo.Diaries.Add(diary);
         }
+
+        public async Task<Diary> GetDiaryByUserIdAsync(long userId)
+        {
+            return await FindByCondition(diary => diary.UserId.Equals(userId)).FirstOrDefaultAsync();
+        }
     }
 }
