@@ -9,6 +9,7 @@ using MySafeDiary.Data.Entities;
 using System.Linq;
 using Telegram.Bot.Types.Enums;
 using MySafeDiary.Infrastructure.Keyboards;
+using Newtonsoft.Json.Converters;
 
 namespace MySafeDiary.Domain.Commands
 {
@@ -31,10 +32,10 @@ namespace MySafeDiary.Domain.Commands
             await userRepository.SaveAsync();
             var diaries = diaryRepository.FindAll();
             //var diary = await diaryRepository.GetDiaryByUserIdAsync(user.Id);
-            //var did = diaries.First(d => d.UserId == user.Id).Id;
+            //var did = diaries.First(d => d.UserId == user.Id).Id; new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds()
             Data.Entities.Note noteData = new Data.Entities.Note()
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = message.Date + TimeSpan.FromHours(3),
                 DiaryId = diaries.First(d => d.UserId == user.Id).Id,
                 Text = note,
                 Name = ""

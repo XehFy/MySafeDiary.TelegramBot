@@ -18,8 +18,9 @@ namespace MySafeDiary.Domain.Services
                 //new NullCatcher(),
                 new StartCommand(),
                 new NoteNowCommand(),
+                new NoteOnDateCommand(),
                 new RegisterCommand(),
-                new NewUserCommand()
+                //new NewUserCommand()
             };
         }
 

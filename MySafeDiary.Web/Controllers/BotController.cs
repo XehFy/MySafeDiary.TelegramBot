@@ -8,6 +8,8 @@ using MySafeDiary.Data.Repositories;
 using System.Linq;
 using System.Collections.Generic;
 using MySafeDiary.Domain.Services;
+using Telegram.Bot.Types.Enums;
+using MySafeDiary.Infrastructure.Keyboards;
 
 namespace MySafeDiary.Web.Controllers
 {
@@ -48,14 +50,20 @@ namespace MySafeDiary.Web.Controllers
             CommandService commandService = (CommandService)_commandService;
             NoCommandService noCommandService = (NoCommandService)_noCommandService;
             if (update == null) return Ok();
-
             var message = update.Message;
-
             bool IsCommand = false;
+
+            if (update.Type == UpdateType.CallbackQuery)
+            {
+                Calendar.OnCallbackQuery(update.CallbackQuery, _telegramBotClient);
+                return Ok();
+            }
+
             if (message == null)
             {
                 return Ok();
             }
+
             foreach (TelegramCommand command in commandService.Get())
             {
                 if (command.IsExecutionNeeded(message, _telegramBotClient))
