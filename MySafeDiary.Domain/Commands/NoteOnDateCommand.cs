@@ -20,8 +20,23 @@ namespace MySafeDiary.Domain.Commands
             var chatId = message.Chat.Id;
             var u = await userRepository.GetUserByIdAsync(chatId);
             if (u == null) return;
-            var rm = new InlineKeyboardMarkup(Calendar.CreateCalendar(2022));
-            await client.SendTextMessageAsync(message.Chat.Id, "🗓 <b>Telegram Bot Calendar</b> 🗓", parseMode: ParseMode.Html, replyMarkup: rm);
+
+            var userTo = new Data.Entities.User
+            {
+                Id = u.Id,
+                IsNoteing = true,
+                IsDateing = true,
+                IsEmailing = false,
+                IsPasswording = false,
+                Email = u.Email,
+                Password = u.Password
+            };
+           
+            userRepository.UpdateUser(userTo);
+            await userRepository.SaveAsync();
+
+            var rm = new InlineKeyboardMarkup(Calendar.CreateCalendar((uint)DateTime.UtcNow.Year));
+            await client.SendTextMessageAsync(message.Chat.Id, "🗓 <b>Выберете дату</b> 🗓", parseMode: ParseMode.Html, replyMarkup: rm);
         }
 
         public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)

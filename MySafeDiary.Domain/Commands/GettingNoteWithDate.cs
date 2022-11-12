@@ -1,24 +1,23 @@
 ﻿using MySafeDiary.Domain.Abstractions;
+using MySafeDiary.Infrastructure.Keyboards;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using MySafeDiary.Data.Entities;
-using System.Linq;
 using Telegram.Bot.Types.Enums;
-using MySafeDiary.Infrastructure.Keyboards;
-using Newtonsoft.Json.Converters;
 
 namespace MySafeDiary.Domain.Commands
 {
-    public class GettingNote : NoTelegramCommand
+    public class GettingNoteWithDate : NoTelegramCommand
     {
         public override async Task Execute(Message message, ITelegramBotClient client)
         {
             var user = await userRepository.GetUserByIdAsync(message.Chat.Id);
-            string note = message.Text;
+            string noteText = message.Text;
+
             Data.Entities.User userDTO = new Data.Entities.User()
             {
                 Email = user.Email,
@@ -26,22 +25,30 @@ namespace MySafeDiary.Domain.Commands
                 Password = user.Password,
                 IsEmailing = user.IsEmailing,
                 IsNoteing = false,
+                IsDateing = false,
                 IsPasswording = user.IsPasswording
             };
+
             userRepository.Update(userDTO);
             await userRepository.SaveAsync();
-            var diaries = diaryRepository.FindAll();
-            //var diary = await diaryRepository.GetDiaryByUserIdAsync(user.Id);
-            //var did = diaries.First(d => d.UserId == user.Id).Id; new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds()
+
+            var diary = diaryRepository.FindByCondition(d => d.UserId == user.Id).FirstOrDefault();
+            var notes = noteRepository.FindByCondition(n => n.DiaryId == diary.Id);
+            var note = notes.OrderByDescending(n => n.Id).FirstOrDefault();
+            //Data.Entities.Note note = noteRepository.FindByCondition(n => n.DiaryId == diary.Id).LastOrDefault();
+
             Data.Entities.Note noteData = new Data.Entities.Note()
             {
-                CreatedDate = message.Date + TimeSpan.FromHours(3),
-                DiaryId = diaries.First(d => d.UserId == user.Id).Id,
-                Text = note,
+                Id = note.Id,
+                CreatedDate = note.CreatedDate,
+                DiaryId = diary.Id,
+                Text = noteText,
                 Name = ""
             };
-            noteRepository.AddNote(noteData, user);
+            noteRepository.Update(noteData);
+            //noteRepository.AddNote(noteData, user);
             await noteRepository.SaveAsync();
+
             await client.SendTextMessageAsync(message.Chat.Id, "Запись успешно добавлена!", replyMarkup: Keyboard.Menu);
         }
 
@@ -51,7 +58,7 @@ namespace MySafeDiary.Domain.Commands
                 return false;
             var user = userRepository.FindByCondition(u => u.Id == message.Chat.Id).FirstOrDefault();
             if (user == null) return false;
-            return user.IsNoteing && !user.IsDateing;
+            return user.IsNoteing && user.IsDateing;
         }
     }
 }

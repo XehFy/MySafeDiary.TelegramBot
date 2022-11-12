@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using MySafeDiary.Domain.Services;
 using Telegram.Bot.Types.Enums;
 using MySafeDiary.Infrastructure.Keyboards;
+using MySafeDiary.Domain.Commands;
 
 namespace MySafeDiary.Web.Controllers
 {
@@ -55,7 +56,8 @@ namespace MySafeDiary.Web.Controllers
 
             if (update.Type == UpdateType.CallbackQuery)
             {
-                Calendar.OnCallbackQuery(update.CallbackQuery, _telegramBotClient);
+                var onCallback = new OnCallbackQuery();
+                await onCallback.CallbackQueryHandle(update.CallbackQuery, _telegramBotClient);
                 return Ok();
             }
 

@@ -16,6 +16,7 @@ namespace MySafeDiary.Domain.Services
             {
                // new NullCatcher(),
                 new GettingNote(),
+                new GettingNoteWithDate(),
                 new GettingEmail(),
                 new GettingPassword()
             };

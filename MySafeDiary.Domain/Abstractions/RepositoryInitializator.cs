@@ -7,7 +7,7 @@ namespace MySafeDiary.Domain.Abstractions
 {
     public abstract class RepositoryInitializator
     {
-        protected static UserRepository userRepository;
+        public static UserRepository userRepository;
         public static DiaryRepository diaryRepository;
         public static NoteRepository noteRepository;
 

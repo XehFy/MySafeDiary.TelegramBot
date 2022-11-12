@@ -12,6 +12,7 @@ namespace MySafeDiary.Data.Entities
         public bool IsNoteing { get; set; }
         public bool IsPasswording { get; set; }
         public bool IsEmailing { get; set; }
+        public bool IsDateing { get; set; }
 
         public ICollection<Diary> Diaries { get; set; }
     }
