@@ -68,7 +68,7 @@ namespace MySafeDiary.Domain.Commands
                         await bot.SendTextMessageAsync(chatId, "Введите запись");
                     }
                     else if (u.IsDateing && !u.IsNoteing) { }
-                    //await bot.AnswerCallbackQueryAsync(query.Id, query.Data, true);
+                    await bot.EditMessageTextAsync(chatId, query.Message.MessageId, query.Data, replyMarkup: null);
                     break;
             }
 
