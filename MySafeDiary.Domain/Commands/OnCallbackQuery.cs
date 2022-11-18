@@ -40,7 +40,9 @@ namespace MySafeDiary.Domain.Commands
                     await bot.EditMessageReplyMarkupAsync(query.Message.Chat.Id, query.Message.MessageId, ykeyboard);
                     break;
                 default:
+
                     if (u.IsNoteing && u.IsDateing) {
+
                         var userTo = new Data.Entities.User
                         {
                             Id = u.Id,
@@ -67,7 +69,19 @@ namespace MySafeDiary.Domain.Commands
                         await noteRepository.SaveAsync();
                         await bot.SendTextMessageAsync(chatId, "Введите запись");
                     }
-                    else if (u.IsDateing && !u.IsNoteing) { }
+
+                    else if (u.IsDateing && !u.IsNoteing) {
+
+                        var diaries = diaryRepository.FindAll();
+                        var diaryId = diaries.First(d => d.UserId == u.Id).Id;
+
+                        var notes = noteRepository.FindByCondition(c => c.DiaryId == diaryId).OrderBy(c => c.CreatedDate).Where(c => c.CreatedDate.Date == DateTime.ParseExact(query.Data, "M/d/yyyy", null));
+
+                        foreach (var note in notes) {
+                            await bot.SendTextMessageAsync(chatId, note.CreatedDate.ToString() + "\n" + note.Text, null);
+                        }
+
+                    }
                     await bot.EditMessageTextAsync(chatId, query.Message.MessageId, query.Data, replyMarkup: null);
                     break;
             }
