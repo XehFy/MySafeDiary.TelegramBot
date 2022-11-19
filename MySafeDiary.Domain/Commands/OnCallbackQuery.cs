@@ -76,9 +76,16 @@ namespace MySafeDiary.Domain.Commands
                         var diaryId = diaries.First(d => d.UserId == u.Id).Id;
 
                         var notes = noteRepository.FindByCondition(c => c.DiaryId == diaryId).OrderBy(c => c.CreatedDate).Where(c => c.CreatedDate.Date == DateTime.ParseExact(query.Data, "M/d/yyyy", null));
-
-                        foreach (var note in notes) {
-                            await bot.SendTextMessageAsync(chatId, note.CreatedDate.ToString() + "\n" + note.Text, null);
+                        if (!notes.Any())
+                        {
+                            await bot.SendTextMessageAsync(chatId, "У вас не было записей за этот день", null);
+                        }
+                        else
+                        {
+                            foreach (var note in notes)
+                            {
+                                await bot.SendTextMessageAsync(chatId, note.CreatedDate.ToString() + "\n" + note.Text, null);
+                            }
                         }
 
                     }

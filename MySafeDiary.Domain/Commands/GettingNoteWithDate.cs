@@ -50,6 +50,8 @@ namespace MySafeDiary.Domain.Commands
             await noteRepository.SaveAsync();
 
             await client.SendTextMessageAsync(message.Chat.Id, "Запись успешно добавлена!", replyMarkup: Keyboard.Menu);
+
+            await client.DeleteMessageAsync(message.Chat.Id, message.MessageId);
         }
 
         public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)

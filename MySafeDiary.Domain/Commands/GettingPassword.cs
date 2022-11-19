@@ -33,6 +33,8 @@ namespace MySafeDiary.Domain.Commands
             diaryRepository.AddDiary(diary, user);
             await userRepository.SaveAsync();
             await client.SendTextMessageAsync(message.Chat.Id, "Вы успешно зарегестрированы!\nТеперь можете приступить к ведению дневника.", replyMarkup: Keyboard.Menu);
+
+            await client.DeleteMessageAsync(message.Chat.Id, message.MessageId);
         }
 
         public override bool IsExecutionNeeded(Message message, ITelegramBotClient client)
