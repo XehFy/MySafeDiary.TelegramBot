@@ -32,11 +32,12 @@ namespace MySafeDiary.Web
         {
             services.AddScoped<ICommandService, NoCommandService>();
             services.AddScoped<ICommandService, CommandService>();
-            //services.AddDbContext<BotContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-            //.AddEntityFrameworkNpgsql()
+
             services.AddDbContext<BotContext>(opt =>
         opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddTelegramBotClient(Configuration);
+
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson();
         }

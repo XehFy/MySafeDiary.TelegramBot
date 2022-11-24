@@ -1,5 +1,4 @@
 ﻿using MySafeDiary.Domain.Abstractions;
-using MySafeDiary.Infrastructure.Keyboards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,13 +6,12 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace MySafeDiary.Domain.Commands
 {
-    public class GetNotesCommand : TelegramCommand
+    public class GetPdfCommand : TelegramCommand
     {
-        public override string Name => "Прочитать записи за день";
+        public override string Name => "Получить PDF дневника";
 
         public override async Task Execute(Message message, ITelegramBotClient client)
         {
@@ -25,7 +23,7 @@ namespace MySafeDiary.Domain.Commands
             var userTo = new Data.Entities.User
             {
                 Id = u.Id,
-                IsNoteing = false,
+                IsNoteing = true,
                 IsDateing = true,
                 IsEmailing = false,
                 IsPasswording = true,

@@ -35,7 +35,6 @@ namespace MySafeDiary.Domain.Commands
             var diary = diaryRepository.FindByCondition(d => d.UserId == user.Id).FirstOrDefault();
             var notes = noteRepository.FindByCondition(n => n.DiaryId == diary.Id);
             var note = notes.OrderByDescending(n => n.Id).FirstOrDefault();
-            //Data.Entities.Note note = noteRepository.FindByCondition(n => n.DiaryId == diary.Id).LastOrDefault();
 
             Data.Entities.Note noteData = new Data.Entities.Note()
             {
@@ -46,7 +45,7 @@ namespace MySafeDiary.Domain.Commands
                 Name = ""
             };
             noteRepository.Update(noteData);
-            //noteRepository.AddNote(noteData, user);
+
             await noteRepository.SaveAsync();
 
             await client.SendTextMessageAsync(message.Chat.Id, "Запись успешно добавлена!", replyMarkup: Keyboard.Menu);
@@ -60,7 +59,7 @@ namespace MySafeDiary.Domain.Commands
                 return false;
             var user = userRepository.FindByCondition(u => u.Id == message.Chat.Id).FirstOrDefault();
             if (user == null) return false;
-            return user.IsNoteing && user.IsDateing;
+            return user.IsNoteing && user.IsDateing && !user.IsPasswording;
         }
     }
 }

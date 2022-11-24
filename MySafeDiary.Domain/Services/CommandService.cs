@@ -15,14 +15,13 @@ namespace MySafeDiary.Domain.Services
         {
             _commands = new List<INorTelegramCommand>
             {
-                //new NullCatcher(),
                 new StartCommand(),
                 new NoteNowCommand(),
                 new NoteOnDateCommand(),
                 new GetNotesCommand(),
+                new GetPdfCommand(),
                 new GetPasswordCommand(),
                 new RegisterCommand(),
-                //new NewUserCommand()
             };
         }
 

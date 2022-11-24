@@ -22,21 +22,18 @@ namespace MySafeDiary.Web.Controllers
         private readonly ICommandService _commandService;
         private readonly ICommandService _noCommandService;
 
-        //BotContext _botContext;
-
         public BotController(IEnumerable<ICommandService> commandServices, ITelegramBotClient telegramBotClient, BotContext context)
         {
             _commandService = commandServices.First(o => o.GetType() == typeof(CommandService));
             _noCommandService = commandServices.First(o => o.GetType() == typeof(NoCommandService));
             _telegramBotClient = telegramBotClient;
-            //_botContext = context;
+
             ContextInitialisator.initContext(context);
+
             RepositoryInitializator.initUserRepository(new UserRepository());
             RepositoryInitializator.initDiaryRepository(new DiaryRepository());
             RepositoryInitializator.initNoteRepository(new NoteRepository());
-            //TelegramCommand.initUserRepository(new UserRepository());
-            //TelegramCommand.initDiaryRepository(new DiaryRepository());
-            //TelegramCommand.initContext(_botContext);
+
         }
 
         [HttpGet]
@@ -50,8 +47,11 @@ namespace MySafeDiary.Web.Controllers
         {
             CommandService commandService = (CommandService)_commandService;
             NoCommandService noCommandService = (NoCommandService)_noCommandService;
+
             if (update == null) return Ok();
+
             var message = update.Message;
+
             bool IsCommand = false;
 
             if (update.Type == UpdateType.CallbackQuery)
@@ -77,16 +77,14 @@ namespace MySafeDiary.Web.Controllers
             }
             if (!IsCommand)
             {
-                foreach (INorTelegramCommand command in noCommandService.Get())
+                foreach (NoTelegramCommand command in noCommandService.Get())
                 {
                     if (command.IsExecutionNeeded(message, _telegramBotClient))
                     {
-                        IsCommand = true;
                         await command.Execute(message, _telegramBotClient);
                         break;
                     }
                 }
-                //await _telegramBotClient.SendTextMessageAsync(message.Chat.Id, message.Text);
             }
             return Ok();
         }

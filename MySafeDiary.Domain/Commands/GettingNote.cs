@@ -31,8 +31,7 @@ namespace MySafeDiary.Domain.Commands
             userRepository.Update(userDTO);
             await userRepository.SaveAsync();
             var diaries = diaryRepository.FindAll();
-            //var diary = await diaryRepository.GetDiaryByUserIdAsync(user.Id);
-            //var did = diaries.First(d => d.UserId == user.Id).Id; new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds()
+
             Data.Entities.Note noteData = new Data.Entities.Note()
             {
                 CreatedDate = message.Date + TimeSpan.FromHours(3),

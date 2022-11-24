@@ -28,10 +28,12 @@ namespace MySafeDiary.Domain.Commands
                 IsPasswording = false
             };
             userRepository.Update(userDTO);
-            var diary = new Data.Entities.Diary { Name = "Мой дневник" };
             await userRepository.SaveAsync();
+
+            var diary = new Data.Entities.Diary { Name = "Мой дневник" };
             diaryRepository.AddDiary(diary, user);
             await userRepository.SaveAsync();
+            
             await client.SendTextMessageAsync(message.Chat.Id, "Вы успешно зарегестрированы!\nТеперь можете приступить к ведению дневника.", replyMarkup: Keyboard.Menu);
 
             await client.DeleteMessageAsync(message.Chat.Id, message.MessageId);
@@ -41,9 +43,12 @@ namespace MySafeDiary.Domain.Commands
         {
             if (message.Type != MessageType.Text)
                 return false;
+            
             var user = userRepository.FindByCondition(u => u.Id == message.Chat.Id).FirstOrDefault();
+            
             if (user == null) return false;
-            return user.IsPasswording;
+            
+            return user.IsPasswording && !user.IsDateing;
         }
     }
 }

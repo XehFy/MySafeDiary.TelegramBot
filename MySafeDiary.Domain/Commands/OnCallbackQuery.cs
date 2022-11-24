@@ -70,7 +70,21 @@ namespace MySafeDiary.Domain.Commands
                         await bot.SendTextMessageAsync(chatId, "Введите запись");
                     }
 
-                    else if (u.IsDateing && !u.IsNoteing) {
+                    else if (u.IsPasswording && u.IsDateing) {
+
+                        var userTo = new Data.Entities.User
+                        {
+                            Id = u.Id,
+                            IsNoteing = false,
+                            IsDateing = false,
+                            IsEmailing = false,
+                            IsPasswording = false,
+                            Email = u.Email,
+                            Password = u.Password
+                        };
+
+                        userRepository.Update(userTo);
+                        await userRepository.SaveAsync();
 
                         var diaries = diaryRepository.FindAll();
                         var diaryId = diaries.First(d => d.UserId == u.Id).Id;

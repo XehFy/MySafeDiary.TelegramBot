@@ -14,9 +14,10 @@ namespace MySafeDiary.Domain.Services
         {
             _noCommands = new List<INorTelegramCommand>
             {
-               // new NullCatcher(),
                 new GettingNote(),
                 new GettingNoteWithDate(),
+                new GetNotesConfirm(),
+                new GetPdfConfirm(),
                 new GettingEmail(),
                 new GettingPassword()
             };

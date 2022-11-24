@@ -41,8 +41,6 @@ namespace MySafeDiary.Domain.Commands
                 };
                 userRepository.Update(u);
                 await userRepository.SaveAsync();
-                //await botClient.SendTextMessageAsync(message.Chat.Id, "Введите свой Email для связи и пин-код для доступа к записям в дневнике\nИспользуйте шаблон:");
-                //await botClient.SendTextMessageAsync(message.Chat.Id, "Регистрация\nexample@email.com\npassw0rd");
             }
         }
     }
