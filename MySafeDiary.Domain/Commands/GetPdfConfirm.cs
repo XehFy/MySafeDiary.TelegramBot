@@ -9,6 +9,8 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using IronPdf;
+using Telegram.Bot.Types.InputFiles;
+using System.IO;
 
 namespace MySafeDiary.Domain.Commands
 {
@@ -53,15 +55,12 @@ namespace MySafeDiary.Domain.Commands
                 var pdf = await Renderer.RenderHtmlAsPdfAsync(diaryHtml.ToString());
 
                 pdf.SaveAs($"{chatId}.pdf");
-               // using (var stream = ($"C:\\Users\\renat\\Desktop\\MySafeDiary\\MySafeDiary.Web\\{chatId}.pdf"))
-                //{
-                //    Telegram.Bot.Types.InputFiles.InputOnlineFile iof = new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream);
-                //    iof.FileName = "smth.zip";
-                //    var send = await botClient.SendDocumentAsync(, iof, "Сообщение");
-               // }
-               // Telegram.Bot.Types.InputFiles.InputOnlineFile iof = new Telegram.Bot.Types.InputFiles.InputOnlineFile($"file:///C:/Users/renat/Desktop/MySafeDiary/MySafeDiary.Web/{chatId}.pdf");
-                //await client.SendDocumentAsync(chatId, )
-                //await client.SendDocumentAsync(chatId, iof);
+
+                await using Stream stream = System.IO.File.OpenRead($"..\\MySafeDiary.Web\\{chatId}.pdf");
+                await client.SendDocumentAsync(
+                    chatId: chatId,
+                    document: new InputOnlineFile(content: stream, fileName: $"{ chatId }.pdf"));
+
                 await client.DeleteMessageAsync(chatId, message.MessageId);
             }
             else

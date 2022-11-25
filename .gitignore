@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/MySafeDiary.Web/417419614.pdf
+/MySafeDiary.Web/1098258646.pdf
+/MySafeDiary.Web/appsettings.json
