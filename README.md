@@ -1,7 +1,7 @@
 # MySafeDiary
 # Презентация работы бота
 ![](https://github.com/XehFy/MySafeDiary.TelegramBot/blob/master/MySafeDiary_presentation.gif)
-<img src="[https://github.com/XehFy/MySafeDiary.TelegramBot/blob/master/MySafeDiary_presentation.gif]" width="295" height="640"/>
+
 ## Диаграма классов на данный момент
 ![Скриншот 31-10-2022 180815](https://user-images.githubusercontent.com/94968044/199041206-fefe4f4f-c7ba-4f0d-a695-cf710957ab77.jpg)
 ## ToDo
